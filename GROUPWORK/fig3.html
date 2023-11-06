@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Oil Displacement Mbd(EV) - STEPS Scenario 2020-2030</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    .bar {
+      fill: rgb(86, 136, 20);
+    }
+
+    .bar:hover {
+      fill: rgb(206, 206, 94);
+    }
+
+    .axis-label {
+      font-size: 12px;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      shape-rendering: crispEdges;
+    }
+
+    .tooltip {
+      position: absolute;
+      background-color: rgba(206, 206, 94, 0.8);
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      pointer-events: none;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Oil Displacement Mbd(EV), STEPS Scenario 2020-2030</h2>
+  <p><strong style="color: grey">Milion barrels per day</strong></p>
+  <svg width="600" height="400"></svg>
+  <div class="tooltip"></div>
+
+  <script>
+    const data = [
+      0.1, 0.3, 0.4, 0, 0, 1.2, 0, 0, 0, 0, 3.4
+    ];
+
+    const years = [
+      "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"
+    ];
+
+    const svg = d3.select("svg");
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+    const width = svg.attr("width") - margin.left - margin.right;
+    const height = svg.attr("height") - margin.top - margin.bottom;
+
+    const xScale = d3.scaleBand()
+      .domain(years)
+      .range([0, width])
+      .padding(0.1);
+
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(data) + 1])
+      .nice()
+      .range([height, 0]);
+
+    const g = svg.append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const tooltip = d3.select(".tooltip");
+
+    g.selectAll(".bar")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", (d, i) => xScale(years[i]))
+      .attr("y", d => yScale(d))
+      .attr("width", xScale.bandwidth())
+      .attr("height", d => height - yScale(d))
+      .on("mouseover", function(d, i) {
+        const year = years[i];
+        const value = d.toFixed(1);
+        tooltip.html(`${year} EV: ${value} Million barrels per day`)
+          .style("left", `${parseInt(xScale(year) + xScale.bandwidth() / 2-34)}px`)
+          .style("top", `${yScale(d)+40}px`)
+          .style("opacity", 1);
+      })
+      .on("mouseout", function() {
+        tooltip.style("opacity", 0);
+      });
+
+    g.append("g")
+      .attr("class", "x axis")
+      .attr("transform", `translate(0, ${height})`)
+      .call(d3.axisBottom(xScale));
+
+    g.append("g")
+      .attr("class", "y axis")
+      .call(d3.axisLeft(yScale));
+
+    g.selectAll(".x.axis text")
+      .attr("class", "axis-label");
+
+    g.selectAll(".y.axis text")
+      .attr("class", "axis-label");
+
+  </script>
+</body>
+</html>
