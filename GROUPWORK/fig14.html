@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AVERAGE ELECTRIC VEHICLES PRICE</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    .axis path,
+    .axis line {
+      fill: none;
+      shape-rendering: crispEdges;
+    }
+
+    .grid-line {
+      stroke: #ccc;
+      stroke-dasharray: 4; 
+    }
+  </style>
+</head>
+<body>
+  <h2>  Average Electric Vehicles Price(WORLD) 2016-2028</h2>
+  <div id="chart"></div>
+
+  <script>
+    const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028];
+    const bevData = [54.5, 52.1, 51.9, 51.5, 51.7, 49.1, 48.5, 48.8, 49.2, 49.5, 49.9, 50.2, 50.6];
+    const phevData = [61.1, 65.0, 64.0, 63.9, 63.8, 63.0, 63.3, 63.3, 63.2, 63.1, 62.9, 62.8, 62.7];
+
+    const margin = { top: 20, right: 30, bottom: 30, left: 50 };
+    const width = 700 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const xScale = d3.scaleLinear()
+      .domain([2015, 2028])
+      .range([0, width]);
+
+    const yScale = d3.scaleLinear()
+      .domain([0, 80])
+      .range([height, 0]);
+
+    const line = d3.line()
+      .x((d, i) => xScale(years[i]))
+      .y(d => yScale(d));
+    const gridLines = svg.selectAll(".grid-line")
+      .data(yScale.ticks(5))
+      .enter()
+      .append("line")
+      .attr("class", "grid-line")
+      .attr("x1", 0)
+      .attr("x2", width)
+      .attr("y1", d => yScale(d))
+      .attr("y2", d => yScale(d));  
+    svg.selectAll(".dot-bev")
+      .data(bevData)
+      .enter()
+      .append("circle")
+      .attr("class", "dot-bev")
+      .attr("cx", (d, i) => xScale(years[i]))
+      .attr("cy", d => yScale(d))
+      .attr("r", 4)
+      .style("fill", "yellowgreen");
+
+    svg.selectAll(".label-bev")
+      .data(bevData)
+      .enter()
+      .append("text")
+      .attr("class", "label-bev")
+      .attr("x", (d, i) => xScale(years[i]) - 10)
+      .attr("y", d => yScale(d) - 10)
+      .text(d => d);
+
+    svg.append("path")
+      .datum(bevData)
+      .attr("fill", "none")
+      .attr("stroke", "yellowgreen")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
+    svg.selectAll(".dot-phev")
+      .data(phevData)
+      .enter()
+      .append("circle")
+      .attr("class", "dot-phev")
+      .attr("cx", (d, i) => xScale(years[i]))
+      .attr("cy", d => yScale(d))
+      .attr("r", 4)
+      .style("fill", "darkgreen");
+
+    svg.selectAll(".label-phev")
+      .data(phevData)
+      .enter()
+      .append("text")
+      .attr("class", "label-phev")
+      .attr("x", (d, i) => xScale(years[i]) - 10)
+      .attr("y", d => yScale(d) - 10)
+      .text(d => d);
+
+    svg.append("path")
+      .datum(phevData)
+      .attr("fill", "none")
+      .attr("stroke", "darkgreen")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
+    svg.append("g")
+      .attr("transform", `translate(0, ${height})`)
+      .call(d3.axisBottom(xScale).ticks(13).tickFormat(d3.format("d")));
+
+    svg.append("g")
+      .call(d3.axisLeft(yScale).ticks(5));
+
+    svg.append("circle")
+      .attr("cx", 10)
+      .attr("cy", -10)
+      .attr("r", 6)
+      .style("fill", "yellowgreen");
+
+    svg.append("circle")
+      .attr("cx", 220)
+      .attr("cy", -10)
+      .attr("r", 6)
+      .style("fill", "darkgreen");
+
+    svg.append("text")
+      .attr("x", 20)
+      .attr("y", -5)
+      .text("Battery Electric Vehicles");
+
+    svg.append("text")
+      .attr("x", 230)
+      .attr("y", -5)
+      .text("Plug-in Hybrid Electric Vehicles");
+  </script>
+</body>
+</html>
