@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>China leads global electric vehicle sales</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    .bar {
+      stroke: white;
+      stroke-width: 1;
+    }
+
+    .axis-label {
+      font-size: 12px;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      shape-rendering: crispEdges;
+    }
+
+    .grid-line {
+      stroke: #ccc;
+      stroke-dasharray: 4; 
+    }
+    .green {
+        fill: rgb(27, 58, 1);
+      }
+      
+      .yellow {
+        fill: rgb(142, 216, 108);
+      }      
+  </style>
+</head>
+<body>
+  <h1>China leads global electric vehicle sales</h1>
+  <p>China accounts for more than half (58 percent) of all new electric cars sold worldwide today.</p>
+  <svg width="800" height="440"></svg>
+
+  <script>
+    const data = [
+    {
+        year: 2010,
+        china: 0.0014,
+        restOfWorld: 0.0061
+      },
+      {
+        year: 2011,
+        china: 0.0051,
+        restOfWorld: 0.0429
+      },
+      {
+        year: 2012,
+        china:0.0099,
+        restOfWorld: 0.1081
+      },
+      {
+        year: 2013,
+        china: 0.0157,
+        restOfWorld: 0.1853
+      },
+      {
+        year: 2014,
+        china: 0.0730,
+        restOfWorld: 0.257
+      },
+      {
+        year: 2015,
+        china: 0.211,
+        restOfWorld: 0.339
+      },
+      {
+        year: 2016,
+        china: 0.339,
+        restOfWorld: 0.411
+      },
+      {
+        year: 2017,
+        china: 0.580,
+        restOfWorld: 0.600
+      },
+      {
+        year: 2018,
+        china: 1.100,
+        restOfWorld: 0.960
+      },
+      {
+        year: 2019,
+        china: 1.100,
+        restOfWorld: 1.000
+      },
+      {
+        year: 2020,
+        china: 1.100,
+        restOfWorld: 1.800
+      },
+      {
+        year: 2021,
+        china: 3.300,
+        restOfWorld: 3.300
+      },
+      {
+        year: 2022,
+        china: 5.900, // Data not available
+        restOfWorld: 4.300 
+      }
+    ];
+
+    const svg = d3.select("svg");
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+    const width = svg.attr("width") - margin.left - margin.right;
+    const height = svg.attr("height") - margin.top - margin.bottom;
+
+    const xScale = d3.scaleBand()
+      .domain(data.map(d => d.year))
+      .range([0, width])
+      .padding(0.1);
+
+    const yScale = d3.scaleLinear()
+      .domain([0, 10.5])
+      .nice()
+      .range([height, 0]);
+
+    const color = d3.scaleOrdinal()
+      .domain(["china", "restOfWorld"])
+      .range(["rgb(86, 136, 20)", "rgb(138, 156, 171)"]);
+
+    const g = svg.append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const stack = d3.stack()
+      .keys(["china", "restOfWorld"])
+      .order(d3.stackOrderNone)
+      .offset(d3.stackOffsetNone);
+
+    const stackedData = stack(data);
+    g.append("g")
+    .attr("class", "x axis")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(xScale));
+
+    g.append("g")
+        .attr("class", "y axis")
+        .call(d3.axisLeft(yScale).ticks(5).tickFormat(d => d + "M"));
+
+    g.selectAll(".x.axis text")
+        .attr("class", "axis-label");
+
+    g.selectAll(".y.axis text")
+        .attr("class", "axis-label");
+    const yTicks = g.selectAll(".y.axis .tick");
+    yTicks.each(function (d) {
+      const yPos = +d3.select(this).attr("transform").match(/-?\d+(\.\d+)?/g)[1];
+      g.append("line")
+        .attr("class", "grid-line")
+        .attr("x1", 0)
+        .attr("x2", width)
+        .attr("y1", yPos)
+        .attr("y2", yPos);
+    });
+    g.selectAll(".bar")
+      .data(stackedData)
+      .enter().append("g")
+      .attr("fill", d => color(d.key))
+      .selectAll("rect")
+      .data(d => d)
+      .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", d => xScale(d.data.year))
+      .attr("y", d => yScale(d[1]))
+      .attr("height", d => yScale(d[0]) - yScale(d[1]))
+      .attr("width", xScale.bandwidth())
+      .on("mousemove", function (event, d) {
+        const xPos = event.offsetX;
+        const key = d3.select(this.parentNode).datum().key;
+        const values = data.map(item => ({
+          year: item.year,
+          value: item[key].toFixed(2),
+        }));
+
+        g.selectAll(".tooltip").remove();
+        
+        g.selectAll(".tooltip")
+          .data(values)
+          .enter()
+          .append("text")
+          .attr("class", d => `tooltip ${key === "china" ? "yellow" : "green"}`)
+          .text(d => d.value + "M")
+          .attr("x", d => xScale(d.year) + xScale.bandwidth() / 2)
+          .attr("y", d => {
+            const yPos = key === "china"
+              ? yScale(d.value / 2)  
+              : yScale(d.value*2); 
+            return yPos - 5; 
+          })
+          .attr("text-anchor", "middle")
+          .attr("fill", "black");
+      })
+      .on("mouseout", function () {
+        g.selectAll(".tooltip").remove();
+      });
+      const legend = svg.append('g')
+      .attr('transform', `translate(${width - 80}, 5)`);
+
+    const legendData = [
+      { label: 'China', color: 'rgb(86, 136, 20)' },
+      { label: 'Rest of World', color: 'rgb(138, 156, 171)' }
+    ];
+
+    legend.selectAll('rect')
+      .data(legendData)
+      .enter()
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', (d, i) => i * 20)
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('fill', d => d.color);
+
+    legend.selectAll('text')
+      .data(legendData)
+      .enter()
+      .append('text')
+      .attr('x', 20)
+      .attr('y', (d, i) => i * 20 + 10)
+      .text(d => d.label)
+      .attr('class', 'legend');
+  </script>
+</body>
+</html>
