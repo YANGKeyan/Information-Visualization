@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style> 
+  text {
+    font-family: Tahoma, sans-serif;
+  }
+
+.line {
+  fill: none;
+  stroke: green;
+  stroke-width: 2px;
+}
+</style>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var total_width = 1250,
+    total_height = 725,
+    margin = {top: 50, right: 50, bottom: 50, left: 50},
+    width = total_width - margin.left - margin.right,
+    height = total_height - margin.top - margin.bottom;
+
+var svg = d3.select("body")
+            .append("svg")
+            .attr("width", total_width)
+            .attr("height", total_height)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+let title = svg.append("text")
+               .attr("class", "title")
+               .attr("y", -margin.top + 25)
+               .attr("x", -margin.left + 50)
+               .attr("font-weight", 700)
+               .attr("font-size", 25)
+               .text("Projected EV Sales in the World");
+
+d3.csv("ev_sales_projection.csv", function(error, data) {
+  if (error) throw error;
+
+  data.forEach(function(d) {
+      d.year = +d.year;
+      d.value = +d.value / 100;
+  });
+
+
+  // Axis
+  var x = d3.scaleLinear().range([0, width]);
+  var y = d3.scaleLinear().range([height, 0]);
+  x.domain(d3.extent(data, function(d) { return d.year; }));
+  y.domain([0, d3.max(data, function(d) { return (d.value + 50)/100; })]);
+
+  let xAxis = d3.axisBottom()
+                .scale(x)
+                .tickFormat(d => d3.format('.0f')(d));
+  let yAxis = d3.axisLeft()
+                .scale(y)
+                .tickFormat(d => d3.format(".0%")(d));
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .append("text")
+      .attr("fill", "black")
+      .attr("transform", "translate(" + width/2 + ", 30)")
+      .text("Year");
+  svg.append("g")
+      .call(yAxis)
+      .append("text")
+      .attr("fill", "black")
+      .attr("transform", "rotate(-90) translate(" + -height/3 + ", -30)")
+      .text("% EV Shares of Cars");
+
+  // Line
+  // var valueline = d3.line()
+  //                   .x(function(d) { return x(d.year); })
+  //                   .y(function(d) { return y(d.value); });
+  // svg.append("path")
+  //   .data([data])
+  //   .attr("class", "line")
+  //   .attr("d", valueline);
+
+  // Moving Line
+  let i = 0;
+  var valueline = d3.line()
+                        .x(function(d) { return x(d.year); })
+                        .y(function(d) { return y(d.value); });
+
+  let ticker = d3.interval(e => {
+      if (i > data.length+1) {
+        let percentageFormat = d3.format(".0%");
+        svg.selectAll("label")
+          .data(data)
+          .enter()
+          .append("text")
+          .attr("class", "label")
+          .attr("x", function(d) { return x(d.year); })
+          .attr("y", function(d) { return y(d.value); })
+          .attr("dy", "-20")
+          .attr("dx", "-10")
+          .text(function(d) { return percentageFormat(d.value); });
+
+        ticker.stop();
+        return;
+      }
+
+      let dataFilter = data.slice(0, i);
+
+      svg.append("path")
+          .datum(dataFilter)
+          .attr("class", "line")
+          .attr("d", valueline(dataFilter))
+          .attr("stroke-dasharray", function() {
+              var length = this.getTotalLength();
+              return length + " " + length;
+          })
+          .attr("stroke-dashoffset", function() {
+              var length = this.getTotalLength();
+              return length;
+          })
+          .transition()
+          .duration(1000)
+          .attr("stroke-dashoffset", 0);
+      i++;
+  }, 500); 
+});
+</script>
+</body>
