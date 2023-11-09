@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Market of New Energy Vehicle</title>
+    <style>
+        .chart-container1 {
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            width: 1200px;
+            height: 800px;
+        }
+
+        .chart-container2 {
+            position: absolute;
+            top: 100px;
+            left: 1020px;
+            width: 1000px;
+            height: 1000px;
+        }
+
+        .chart-container1 iframe,
+        .chart-container2 iframe {
+            border: none; 
+        }
+
+        #chart-button {
+            position: absolute;
+            top: 80px;
+            left: 1020px;
+        }
+    </style>
+</head>
+<body>
+    <h1>3. Market of New Energy Vehicle</h1>
+    <div class="chart-container1">
+        <iframe id="chart-iframe-1" src="fig11_nan.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <div class="chart-container2">
+        <iframe id="chart-iframe-2" src="fig11.1.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <button id="chart-button">SALES BY BRAND Chart</button>
+
+    <script>
+
+        const chartButton = document.getElementById("chart-button");
+        const chartIframe1 = document.getElementById("chart-iframe-1");
+        const chartIframe2 = document.getElementById("chart-iframe-2");
+
+
+        let isFig11_1Visible = true;
+
+
+        chartButton.addEventListener("click", () => {
+            if (isFig11_1Visible) {
+                chartIframe2.src = "fig11.2.html"; 
+            } else {
+                chartIframe2.src = "fig11.1.html"; 
+            }
+
+            isFig11_1Visible = !isFig11_1Visible;
+        });
+    </script>
+</body>
+</html>

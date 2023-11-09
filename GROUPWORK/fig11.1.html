@@ -11,7 +11,7 @@
     }
 
     .axis-label {
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .axis path,
@@ -29,14 +29,14 @@
       }
       
       .yellow {
-        fill: rgb(142, 216, 108);
+        fill: rgb(6, 130, 12);
       }      
   </style>
 </head>
 <body>
-  <h1>China leads global electric vehicle sales</h1>
+  <h2>China leads global electric vehicle sales</h2>
   <p>China accounts for more than half (58 percent) of all new electric cars sold worldwide today.</p>
-  <svg width="800" height="440"></svg>
+  <svg width="700" height="560"></svg>
 
   <script>
     const data = [
@@ -124,7 +124,7 @@
 
     const color = d3.scaleOrdinal()
       .domain(["china", "restOfWorld"])
-      .range(["rgb(86, 136, 20)", "rgb(138, 156, 171)"]);
+      .range(["rgb(163, 236, 143)", "rgb(138, 156, 171)"]);
 
     const g = svg.append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -159,18 +159,55 @@
         .attr("y1", yPos)
         .attr("y2", yPos);
     });
+
     g.selectAll(".bar")
       .data(stackedData)
-      .enter().append("g")
+      .enter()
+      .append("g")
       .attr("fill", d => color(d.key))
       .selectAll("rect")
       .data(d => d)
-      .enter().append("rect")
+      .enter()
+      .append("rect")
       .attr("class", "bar")
       .attr("x", d => xScale(d.data.year))
-      .attr("y", d => yScale(d[1]))
-      .attr("height", d => yScale(d[0]) - yScale(d[1]))
+      .attr("y", height)
+      .attr("height", 0)
       .attr("width", xScale.bandwidth())
+      .transition()
+      .duration(1000)
+      .delay((d, i) => i * 200)
+      .attr("y", d => yScale(d[1]))
+      .attr("height", d => yScale(d[0]) - yScale(d[1]));
+      
+    const legend = svg.append('g')
+    .attr('transform', `translate(${width - 80}, 5)`);
+
+    const legendData = [
+      { label: 'China', color: 'rgb(86, 136, 20)' },
+      { label: 'Rest of World', color: 'rgb(138, 156, 171)' }
+    ];
+
+    legend.selectAll('rect')
+      .data(legendData)
+      .enter()
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', (d, i) => i * 20)
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('fill', d => d.color);
+
+    legend.selectAll('text')
+      .data(legendData)
+      .enter()
+      .append('text')
+      .attr('x', 20)
+      .attr('y', (d, i) => i * 20 + 10)
+      .text(d => d.label)
+      .attr('class', 'legend');
+      
+    g.selectAll(".bar") // 保留光标交互
       .on("mousemove", function (event, d) {
         const xPos = event.offsetX;
         const key = d3.select(this.parentNode).datum().key;
@@ -200,32 +237,6 @@
       .on("mouseout", function () {
         g.selectAll(".tooltip").remove();
       });
-      const legend = svg.append('g')
-      .attr('transform', `translate(${width - 80}, 5)`);
-
-    const legendData = [
-      { label: 'China', color: 'rgb(86, 136, 20)' },
-      { label: 'Rest of World', color: 'rgb(138, 156, 171)' }
-    ];
-
-    legend.selectAll('rect')
-      .data(legendData)
-      .enter()
-      .append('rect')
-      .attr('x', 0)
-      .attr('y', (d, i) => i * 20)
-      .attr('width', 10)
-      .attr('height', 10)
-      .attr('fill', d => d.color);
-
-    legend.selectAll('text')
-      .data(legendData)
-      .enter()
-      .append('text')
-      .attr('x', 20)
-      .attr('y', (d, i) => i * 20 + 10)
-      .text(d => d.label)
-      .attr('class', 'legend');
   </script>
 </body>
 </html>

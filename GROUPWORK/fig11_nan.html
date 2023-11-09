@@ -52,6 +52,7 @@
    </style>
 </head>
 
+<h2>Largest Market of Electric Vehicles 2011-2022</h2>
 <body>
 <script>
 var svg = d3.select("body")
@@ -71,11 +72,6 @@ const margin = {
    left: 0};
 
 let barPadding = (height-(margin.bottom+margin.top))/(top_n*5);
-
-let title = svg.append('text')
-               .attr('class', 'title')
-               .attr('y', 24)
-               .text('Largest Market of Electric Vehicles');
 
 let subTitle = svg.append("text")
                   .attr("class", "subTitle")

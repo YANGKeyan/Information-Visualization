@@ -5,6 +5,7 @@
 </head>
 <body>
     <h2>VEHICLE SALES BY BRAND in 2022(in percent)</h2>
+    <h2>&nbsp; &nbsp;&nbsp; &nbsp;</h2>
     <div id="bubble-chart"></div>
     <style>
         text {
@@ -31,11 +32,11 @@
 
         var svg = d3.select("#bubble-chart")
             .append("svg")
-            .attr("width", 800)
+            .attr("width", 700)
             .attr("height", 600);
 
         var bubble = d3.pack()
-            .size([600, 500])
+            .size([600, 600])
             .padding(1.5);
 
         var nodes = d3.hierarchy({ children: data })
@@ -61,7 +62,7 @@
                 return color(d.data.percentage);
             })
             .transition() // 添加过渡
-            .duration(1000) // 过渡时长（毫秒）
+            .duration(3000) // 过渡时长（毫秒）
             .attr("r", function (d) {
                 return d.r;
             });
