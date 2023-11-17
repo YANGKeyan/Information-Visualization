@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="shortcut icon" href="#">
+		<meta charset="utf-8">
+		<title>D3: Loading data from a JSON file</title>
+		<script type="text/javascript" src="d3.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			d3.json("users.json", function(data) {
+				console.log(data);
+			});
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storyboard</title>
+    <style>
+         body {
+        
+        font-family: Arial, sans-serif;
+     
+        background-color: #f0f0f0;
+   
+    margin-left: 30px;
+    margin-top: 20px;
+    }
+
+
+        .iframe-container {
+            display: flex;
+            
+            align-items: flex-start; /* 将iframe内的内容与顶部对齐 */
+        }
+
+            .iframe-container iframe {
+                border: none; /* 移除iframe边框 */
+                display: block; /* 设置为块级元素使得它可以使用 margin: auto; 来居中 */
+                margin: auto;
+                margin-top: 0; /* 减少顶部边距，将iframe向上移动 */
+            }
+
+        h1 {
+            margin-top: 20px; /* 大标题的上边距 */
+            margin-bottom: 0; /* 减少大标题下方的空间，可选 */
+        }
+        button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(72, 141, 11);
+        color: rgb(228, 233, 237);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+      h2 {
+            font-size: 20px;
+            color: #555;
+            font-weight: normal;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>1. New Energy Vehicle and the Environment </h1> 
+    <h2>1.2 Minerals in ELECTRIC VEHICLES VS. GAS CARS</h2><!-- 大标题 -->
+    <div class="iframe-container">
+        <!-- 嵌入 fig2.html -->
+        <iframe src="fig2.html" width="1000" height="1000"></iframe>
+    </div>
+    <a href="A1.html">
+        <button type="button" style="position: absolute; top: 900px; left: 30px;">🡄 Previous</button>
+    </a>
+    <a href="A3.html">
+        <button type="button" style="position: absolute; top: 900px; left: 170px;">Next 🡆</button>
+    </a>
+</body>
+</html>

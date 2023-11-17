@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Future prospects</title>
+    <style>
+     body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    
+    margin-left: 30px;
+    margin-right: 20px;
+  }
+        .chart-container1 {
+            position: absolute;
+            top: 70px;
+            left: 2px;
+            width: 1200px;
+            height: 800px;
+        }
+
+        .chart-container2 {
+            position: absolute;
+            top: 70px;
+            left: 1100px;
+            width: 1000px;
+            height: 1000px;
+        }
+
+        .chart-container1 iframe,
+        .chart-container2 iframe {
+            border: none; 
+        }
+  
+             button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(72, 141, 11);
+        color: rgb(228, 233, 237);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+</head>
+<body>
+    <h1>4. Future prospects</h1>
+    <div class="chart-container1">
+        <iframe id="chart-iframe-1" src="fig13_nan.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <div class="chart-container2">
+        <iframe id="chart-iframe-2" src="fig13.1.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <p style="position: absolute; top: 700px; left: 60px; right: 820px;">
+        Projected EV sales in the world are expected to consistently rise through 2030, reflecting the growing global demand for electric vehicles, driven by factors such as <b><span style="color: green;">environmental concerns</span></b>, <b><span style="color: green;">government incentives</span></b>, <b><span style="color: green;">advancements in EV technology</span></b>, and <b><span style="color: green;">increasing consumer adoption of sustainable transportation options</span></b>.
+    </p>
+    <div class="navigation-buttons" style="position: absolute; top: 800px; left: 30px; right: 900px;">
+        <button id="previousPageButton">🡄 Previous</button>
+        <button id="nextPageButton">Next 🡆</button>
+    </div>
+    <script>
+        // Previous Page Button
+        document.getElementById("previousPageButton").onclick = function () {
+            // Redirect to the previous page
+            window.location.href = "C_Market.html"; // Replace with the actual URL of the previous page
+        };
+    
+        // Next Page Button
+        document.getElementById("nextPageButton").onclick = function () {
+            // Redirect to the next page
+            window.location.href = "E_Conclusion.html"; // Replace with the actual URL of the next page
+        };
+    </script>
+</body>
+</html>

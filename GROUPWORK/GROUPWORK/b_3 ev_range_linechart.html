@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style> 
+    body {
+        
+        background-color: #f0f0f0;
+        margin-left: 30px;
+        margin-top: 20px;
+    }
+text {
+    font-family: Tahoma, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.text {
+    font-family: Tahoma, sans-serif;
+}
+  
+.line {
+    fill: none;
+    stroke: green;
+    stroke-width: 2px;
+}
+button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(72, 141, 11);
+        color: rgb(228, 233, 237);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+       
+</style>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<h1>2. New Energy Vehicle Technology</h1>
+   
+<a style="font-size: 24px; font-weight: bold;color: #555;">2.3 New Energy Vehicle VS Fuel Range</a>
+<div id ="t" style="  font-size: 16px;color: #555;">
+    <p>New Energy Vehicles have been making <b>significant progress</b> in terms of range on a full charge.</p>
+    <p>The average Electric Vehicle (EV) range has been increasing over the years and is expected to surpass conventional gasoline vehicles.</p>
+    <p>This shift towards longer EV ranges is a positive step towards reducing our dependence on fossil fuels and lowering emissions.</p>
+</div>
+<script>
+var total_width = 1000,
+    total_height = 600,
+    margin = {top: 25, right: 50, bottom: 50, left: 50},
+    width = total_width - margin.left - margin.right,
+    height = total_height - margin.top - margin.bottom;
+
+var svg = d3.select("body")
+            .append("svg")
+            .attr("width", total_width)
+            .attr("height", total_height)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+ 
+
+d3.csv("ev_range.csv", function(error, data) {
+  if (error) throw error;
+
+data.forEach(d => {
+    d.year = +d.year;
+    d.ev_avg = +d.ev_avg;
+    d.ev_max = +d.ev_max;
+    d.fuel_median = +d.fuel_median;
+});
+
+// Axis
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+x.domain(d3.extent(data, function(d) { return d.year; }));
+y.domain([0, 1000]);
+
+let xAxis = d3.axisBottom()
+              .scale(x)
+              .tickFormat(d => d3.format('.0f')(d));
+let yAxis = d3.axisLeft()
+              .scale(y)
+
+svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .append("text")
+    .attr("fill", "black")
+    .attr("transform", "translate(" + width/2 + ", 30)")
+    .text("Year");
+svg.append("g")
+    .call(yAxis)
+    .append("text")
+    .attr("fill", "black")
+    .attr("transform", "rotate(-90) translate(" + -height/3 + ", -30)")
+    .text("Range on Full Charge/Fuel (km)");
+
+
+var ev_avg_line = d3.line()
+               .x(function(d) { return x(d.year); })
+               .y(function(d) { return y(d.ev_avg); });
+svg.append("path")
+   .datum(data)
+   .attr("fill", "none")
+   .attr("stroke", "#14f200")
+   .attr("stroke-width", 2)
+   .attr("d", ev_avg_line);
+svg.selectAll("circle")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", d => x(d.year))
+    .attr("cy", d => y(d.ev_avg))
+    .attr("r", 4)
+    .attr("fill", "#14f200");
+svg.append("text")
+   .attr("x", x(2011) + 10)
+   .attr("y", y(data[0].ev_avg) + 25 )
+   .text("Average EV Range")
+   .attr("fill", "#14f200");
+
+var ev_max_line = d3.line()
+                    .x(function(d) { return x(d.year); })
+                    .y(function(d) { return y(d.ev_max); });
+svg.append("path")
+   .datum(data)
+   .attr("fill", "none")
+   .attr("stroke", "darkgreen")
+   .attr("stroke-width", 2)
+   .attr("d", ev_max_line);
+svg.selectAll("circle.ev_max")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", d => x(d.year))
+    .attr("cy", d => y(d.ev_max))
+    .attr("r", 4)
+    .attr("fill", "darkgreen");
+
+svg.append("text")
+   .attr("x", x(2011) + 10)
+   .attr("y", y(data[1].ev_max) - 10 )
+   .text("Max EV Range")
+   .attr("fill", "darkgreen");
+
+svg.append("line")
+    .attr("x1", x(2011))
+    .attr("x2", x(2021))
+    .attr("y1", y(data[0].fuel_median))
+    .attr("y2", y(data[0].fuel_median))
+    .attr("stroke", "darkorange")
+    .attr("stroke-width", 1)
+    .attr("stroke-dasharray", "4");
+svg.append("text")
+   .attr("x", x(2011) + 10)
+   .attr("y", y(data[0].fuel_median) - 10)
+   .text("Median Gas Car Range")
+   .attr("fill", "darkorange");
+});
+</script>
+ 
+<a href="./b_2 performance-of-nev.html"><button type="button" style="position: absolute; top: 850px; left: 30px;">🡄 Previous</button></a>
+<a href="./b_4 latest-tech.html"><button type="button" style="position: absolute; top: 850px; left: 170px;">Next 🡆</button></a>
+</body>

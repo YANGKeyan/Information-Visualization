@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Minerals in EV</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            margin-top: 30px;
+            font-size: 25px; /* 设置标题的字体大小 */
+        }
+
+        
+
+        img {
+            width: 900px;
+            cursor: pointer;
+            margin: 0 auto;
+            display: block;
+        }
+
+        #image-container {
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+  
+    <!-- 其余内容保持不变 -->
+    <p>EV require a wider range of minerals for their motors and batteries compared to gas cars</p>
+    <p><strong style="color: #cece5e">In fact, an EV can have 6 times more minerals than a gas car and be on average 340kg heavier</strong></p>
+    <div id="image-container">
+        <img id="traditional-car" src="traditional_car.jpg" alt="GAS CARS" style="display: none;">
+        <img id="electric-car" src="electric_car.jpg" alt="ELECTRIC VEHICLES">
+    </div>
+
+    <script>
+        // JavaScript代码保持不变
+        const traditionalCarImage = document.getElementById("traditional-car");
+        const electricCarImage = document.getElementById("electric-car");
+
+        electricCarImage.addEventListener("click", () => {
+            electricCarImage.style.display = "none";
+            traditionalCarImage.style.display = "block";
+        });
+
+        traditionalCarImage.addEventListener("click", () => {
+            traditionalCarImage.style.display = "none";
+            electricCarImage.style.display = "block";
+        });
+    </script>
+</body>
+</html>
+

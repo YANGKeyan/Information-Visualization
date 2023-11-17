@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <h2> Petrol & EV charge price difference(UK, 2022)</h2>
+    <svg width="800" height="800">
+
+        <rect x="10" y="10" width="250" height="125" rx="10" ry="10" fill="lightcoral" style="opacity:0" />
+        <rect x="290" y="10" width="250" height="125" rx="10" ry="10" fill="lightgreen" style="opacity:0" />
+
+        <text x="130" y="35" text-anchor="middle" fill="black" font-size="16">
+            Average cost to fill a tank
+            <tspan x="130" dy="75" fill="white" font-size="28" font-weight="bold">$81.02</tspan>
+        </text>
+
+        <text x="420" y="35" text-anchor="middle" fill="black" font-size="16">
+            Cost to fully charge a car
+            <tspan x="420" dy="75" fill="white" font-size="28" font-weight="bold">$16.78</tspan>
+        </text>
+
+        <rect x="10" y="150" width="120" height="110" rx="10" ry="10" fill="lightcoral" style="opacity:0" />
+        <rect x="140" y="150" width="120" height="110" rx="10" ry="10" fill="lightcoral" style="opacity:0" />
+        <rect x="290" y="150" width="120" height="110" rx="10" ry="10" fill="lightgreen" style="opacity:0" />
+        <rect x="420" y="150" width="120" height="110" rx="10" ry="10" fill="lightgreen" style="opacity:0" />
+
+        <text x="72" y="185" text-anchor="middle" fill="black" font-size="12" font-weight="bold">
+          Cost per 10 Miles
+          <tspan x="70" dy="45" fill="white" font-size="24" font-weight="bold">$2.06</tspan>
+        </text>
+        <text x="350" y="185" text-anchor="middle" fill="black" font-size="12" font-weight="bold">
+          Cost per 10 Miles
+          <tspan x="348" dy="45" fill="white" font-size="24" font-weight="bold">$0.71</tspan>
+        </text>
+        <text x="202" y="185" text-anchor="middle" fill="black" font-size="12" font-weight="bold">
+          Cost per 100 Miles
+          <tspan x="200" dy="45" fill="white" font-size="24" font-weight="bold">$20.63</tspan>
+        </text>
+        <text x="482" y="185" text-anchor="middle" fill="black" font-size="12" font-weight="bold">
+          Cost per 100 Miles
+          <tspan x="480" dy="45" fill="white" font-size="24" font-weight="bold">$20.63</tspan>
+        </text>
+
+        <rect x="10" y="270" width="530" height="110" rx="10" ry="10" fill="grey" style="opacity:0" />
+
+        <text x="280" y="325" text-anchor="middle" fill="white" font-size="28" font-weight="bold">
+          190.37%
+          <tspan x="270" dy="25" fill="white" font-size="14" font-weight="bold">Difference per 100 Miles</tspan>
+        </text>
+    </svg>
+
+    <script>
+        d3.selectAll('rect')
+            .transition()
+            .duration(2000) 
+            .attr('style', 'opacity:1'); 
+        d3.selectAll('text')
+            .transition()
+            .duration(2000)
+            .attr('style', 'opacity:1'); 
+    </script>
+</body>
+</html>

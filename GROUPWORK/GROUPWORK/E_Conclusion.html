@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conclusion</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    
+    margin-left: 30px;
+    margin-right: 20px;
+  }
+        .chart-container1 {
+            position: absolute;
+            top: 70px;
+            left: 50px;
+            width: 1200px;
+            height: 800px;
+        }
+
+        .chart-container2 {
+            position: absolute;
+            top: 550px;
+            left: 50px;
+            width: 1000px;
+            height: 1000px;
+        }
+
+        .chart-container3 {
+            position: absolute;
+            top: 70px;
+            left: 900px;
+            width: 1000px;
+            height: 1000px;
+        }
+
+        .chart-container4 {
+            position: absolute;
+            top: 250px;
+            left: 900px;
+            width: 1000px;
+            height: 1000px;
+        }
+
+        .chart-container1 iframe,
+        .chart-container2 iframe,
+        .chart-container3 iframe,
+        .chart-container4 iframe {
+            border: none; 
+        }
+   
+               button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(72, 141, 11);
+        color: rgb(228, 233, 237);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+</head>
+<body>
+    <h1>5. Conclusion</h1>
+    <div class="chart-container1">
+        <iframe id="chart-iframe-1" src="fig14.1.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <div class="chart-container2">
+        <iframe id="chart-iframe-2" src="fig14.2.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <div class="chart-container3">
+        <iframe id="chart-iframe-3" src="fig14.3.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <div class="chart-container4">
+        <iframe id="chart-iframe-4" src="icon2.svg" width="100%" height="100%"></iframe>
+    </div>
+
+    <p style="position: absolute; top: 250px; left: 1490px; right: 300px;color:rgb(8, 108, 40)">
+        Showing that it is <span style="font-size: 70px; color: green; font-weight: bold;">more economical</span> to run electric vehicles.
+    </p>
+    
+    <p style="position: absolute; top: 620px; left: 940px; right: 20px;font-size: 18px;">
+    When it comes to the road tax though, Tesla's comes close to four times more than Kia Cerato's. 
+    </p>
+    <p style="position: absolute; top: 670px; left: 940px; right: 300px;font-size: 18px;">
+    <span style="font-size: 30px; color: green; font-weight: bold;">BUT EV purchasers get two types of incentives:</span> The combined value of S$45,000 is definitely a pull factor, as a sweet S$45,000 off total car purchase price!  
+    </p>
+    <div class="navigation-buttons" style="position: absolute; top: 840px; left: 930px; right: 300px;">
+        <button id="previousPageButton">🡄 Previous</button>
+        <button id="nextPageButton">Next 🡆</button>
+    </div>
+    <script>
+        // Previous Page Button
+        document.getElementById("previousPageButton").onclick = function () {
+            // Redirect to the previous page
+            window.location.href = "D_Future.html"; // Replace with the actual URL of the previous page
+        };
+    
+        // Next Page Button
+        document.getElementById("nextPageButton").onclick = function () {
+            // Redirect to the next page
+            window.location.href = "F_Final.html"; // Replace with the actual URL of the next page
+        };
+    </script>
+</body>
+</html>

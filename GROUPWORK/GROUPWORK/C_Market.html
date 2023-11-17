@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Market of New Energy Vehicle</title>
+    <style>
+          body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    
+    margin-left: 30px;
+    margin-right: 20px;
+  }
+        .chart-container1 {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            width: 1200px;
+            height: 800px;
+        }
+
+        .chart-container2 {
+            position: absolute;
+            top: 60px;
+            left: 1020px;
+            width: 1000px;
+            height: 1000px;
+        }
+
+        .chart-container1 iframe,
+        .chart-container2 iframe {
+            border: none; 
+        }
+
+        #chart-button {
+            position: absolute;
+            top: 750px;
+            left: 1060px;
+        }
+
+         button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgb(72, 141, 11);
+            color: rgb(228, 233, 237);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+     
+
+        
+    </style>
+</head>
+<body>
+    <h1>3. Market of New Energy Vehicle</h1>
+    <div class="chart-container1">
+        <iframe id="chart-iframe-1" src="fig11_nan.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <div class="chart-container2">
+        <iframe id="chart-iframe-2" src="fig11.1.html" width="100%" height="100%"></iframe>
+    </div>
+
+    <p style="position: absolute; top: 100px; left: 30px; right: 1000px;">
+        From 2011 to 2022, the electric vehicle market witnessed a significant shift, with the <strong>United States</strong> initially leading the way, followed by <strong>China</strong> surpassing the U.S. to become the world's largest electric vehicle market.
+    </p>
+    
+    
+    <button id="chart-button">SALES BY BRAND Chart</button>
+   
+    <div class="navigation-buttons" style="position: absolute; top: 790px; left: 30px; right: 900px;">
+        <button id="previousPageButton">🡄 Previous</button>
+        <button id="nextPageButton">Next 🡆</button>
+    </div>
+    <script>
+
+        const chartButton = document.getElementById("chart-button");
+        const chartIframe1 = document.getElementById("chart-iframe-1");
+        const chartIframe2 = document.getElementById("chart-iframe-2");
+
+
+        let isFig11_1Visible = true;
+
+
+        chartButton.addEventListener("click", () => {
+            if (isFig11_1Visible) {
+                chartIframe2.src = "fig11.2.html"; 
+            } else {
+                chartIframe2.src = "fig11.1.html"; 
+            }
+
+            isFig11_1Visible = !isFig11_1Visible;
+        });
+    </script>
+   <script>
+    // Previous Page Button
+    document.getElementById("previousPageButton").onclick = function () {
+        // Redirect to the previous page
+        window.location.href = "b_4 latest-tech.html"; // Replace with the actual URL of the previous page
+    };
+
+    // Next Page Button
+    document.getElementById("nextPageButton").onclick = function () {
+        // Redirect to the next page
+        window.location.href = "D_Future.html"; // Replace with the actual URL of the next page
+    };
+</script>
+</body>
+
+</html>

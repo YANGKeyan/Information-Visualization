@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <h2>VEHICLE SALES BY BRAND in 2022(in percent)</h2>
+    <h2>&nbsp; &nbsp;&nbsp; &nbsp;</h2>
+    <div id="bubble-chart"></div>
+    <style>
+        text {
+            fill: rgb(68, 68, 68);
+            font-weight: bold;
+            font-size: 11px;
+        }
+    </style>
+    <script>
+        var data = [
+            { name: "BYD", percentage: 17.5 },
+            { name: "Tesla", percentage: 12.5 },
+            { name: "Wuling", percentage: 4.3 },
+            { name: "Volkswagen", percentage: 4.2 },
+            { name: "BMW", percentage: 3.5 },
+            { name: "Mercedes-Benz", percentage: 2.9 },
+            { name: "Alon", percentage: 2.6 },
+            { name: "Hyundai", percentage: 2.3 },
+            { name: "Kia", percentage: 2.3 },
+            { name: "Changan", percentage: 2.2 },
+        ];
+
+        var color = d3.scaleSequential(d3.interpolateViridis).domain([33, 0]);
+
+        var svg = d3.select("#bubble-chart")
+            .append("svg")
+            .attr("width", 700)
+            .attr("height", 600);
+
+        var bubble = d3.pack()
+            .size([600, 600])
+            .padding(1.5);
+
+        var nodes = d3.hierarchy({ children: data })
+            .sum(function (d) {
+                return d.percentage;
+            });
+
+        var node = svg.selectAll(".node")
+            .data(bubble(nodes).descendants())
+            .enter()
+            .filter(function (d) {
+                return !d.children;
+            })
+            .append("g")
+            .attr("class", "node")
+            .attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+
+        node.append("circle")
+            .attr("r", 0) // 初始半径为0
+            .style("fill", function (d) {
+                return color(d.data.percentage);
+            })
+            .transition() // 添加过渡
+            .duration(3000) // 过渡时长（毫秒）
+            .attr("r", function (d) {
+                return d.r;
+            });
+
+        var text = node.append("text")
+            .attr("dy", ".3em")
+            .style("text-anchor", "middle");
+
+        text.append("tspan")
+            .text(function (d) {
+                return d.data.name;
+            })
+            .attr("x", 0)
+            .attr("dy", "-1.2em");
+
+        text.append("tspan")
+            .text(function (d) {
+                return d.data.percentage + "%";
+            })
+            .attr("x", 0)
+            .attr("dy", "1.2em");
+
+        svg.append("circle")
+            .attr("cx", 20)
+            .attr("cy", 20)
+            .attr("r", 10)
+            .style("fill", color(45.7));
+        svg.append("text")
+            .attr("x", 40)
+            .attr("y", 25)
+            .text("Others: 45.7%")
+            .style("font-weight", "bold");
+    </script>
+</body>
+</html>

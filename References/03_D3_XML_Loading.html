@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="shortcut icon" href="#">
+		<meta charset="utf-8">
+		<title>D3: Loading data from a XML file</title>
+		<!-- Load d3.js -->
+		<script src="https://d3js.org/d3.v4.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			d3.xml("employees.xml", function(data) {
+				console.log(data);
+				
+				let xmlData = d3.select(data.documentElement);
+				
+				age = xmlData.selectAll("Age");
+				console.log(age);
+			});
+			
+		</script>
+	</body>
+</html>

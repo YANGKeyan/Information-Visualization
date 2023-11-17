@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+           body {
+        
+        font-family: Arial, sans-serif;
+     
+        background-color: #f0f0f0;
+   
+    margin-left: 30px;
+    margin-top: 20px;
+    }
+
+      text {
+        font-family: Tahoma, sans-serif;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(72, 141, 11);
+        color: rgb(228, 233, 237);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+      h2 {
+            font-size: 20px;
+            color: #555;
+            font-weight: normal;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+  <body>
+    <h1>1. New Energy Vehicle and the Environment </h1> 
+    <h2>1.3 Comparing Greenhouse Gas Emissions</h2>
+    <script>
+      // Your existing D3 code here
+   
+function get_colors(n) {
+  var colors = ["rgb(252, 3, 3)"
+              , "rgb(252, 128, 3)"
+              , "rgb(252, 252, 3)"
+              , "rgb(152, 252, 3)"
+              , "rgb(11, 252, 3)"];
+  return colors[ n % colors.length ];
+}
+
+var total_width = 1250,
+    total_height = 725,
+    margin = {top: 60, right: 375, bottom: 50, left: 50},
+    width = total_width - margin.left - margin.right,
+    height = total_height - margin.top - margin.bottom;
+
+var svg = d3.select("body")
+            .append("svg")
+            .attr("width", total_width)
+            .attr("height", total_height)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  
+               
+               let description = svg.append("text")
+    .attr("class", "description")
+    .attr("y", -margin.top + 20)  // 调整 y 坐标，根据需要
+    .attr("x", -margin.left + 50) // 调整 x 坐标，根据需要
+    .attr("font-size", 16);
+
+description.append("tspan")
+    .text("New Energy Vehicles (NEVs) generally exhibit lower greenhouse gas emissions and lower costs compared to Traditional Fuel Vehicles, indicating");
+
+description.append("tspan")
+.attr("x", -margin.left + 50)
+    .attr("dy", 20)  // 调整垂直偏移，根据需要
+    .text("their lower environmental impact and their huge economic advantage.");
+
+// Area Chart
+svg.append("path")
+   .attr("class", "shaded-area") 
+   .attr("label", "Internal combustion engine (gasoline)") // ICEV
+   .attr("d", "M120.23475015090551,401.43622625911445L645.2707542826067,314.4142374618522L707.0510250071777,254.84929393547569L726.257174772341,223.76178578068635L749.5238095238095,113.68591102710742L679.1577575587966,44.4285714285714L487.0253326688559,47.754866799377425L123.4213256441326,365.8025373004837L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697L111.88208616780045,386.9600465820697Z")
+   .style("opacity", "0.15")
+   .style("fill", function(d,i) { return get_colors(0); });
+svg.append("path")
+   .attr("class", "shaded-area") 
+   .attr("label", "Internal combustion engine (diesel)") // ICEV_Diesel
+   .attr("d", "M504.8456040855645,291.9604183437113L641.0992991382561,245.56506350343327L511.02294033766145,240.71284513351603L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511L430.58826454338265,281.0323940738511Z")
+   .style("opacity", "0.15")
+   .style("fill", function(d,i) { return get_colors(1); });
+svg.append("path")
+   .attr("class", "shaded-area") 
+   .attr("label", "Hybrid") // HEV
+   .attr("d", d="M177.5826258305666,464.34638648165213L418.22280909728727,412.89877952990616L641.4291480814019,293.06661978147616L469.3444519012646,281.515439740355L269.4374122198565,395.68843782076016L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267L182.3665672910297,447.2456766946267Z")
+   .style("opacity", "0.15")
+   .style("fill", function(d,i) { return get_colors(2); });
+svg.append("path")
+   .attr("class", "shaded-area") 
+   .attr("label", "Plug-in hybrid") // PHEV
+   .attr("d", "M177.41449915277764,480.8862797274506L429.76894572761046,458.20545392950885L676.386881985484,332.2837115394705L687.553679686982,288.0758345177835L551.1871706627917,268.7598566389317L311.18300370000384,357.3000350099222L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467L158.79273274929005,476.55004494036467Z")
+   .style("opacity", "0.15")
+   .style("fill", function(d,i) { return get_colors(3); });
+svg.append("path")
+   .attr("class", "shaded-area") 
+   .attr("label", "Battery electric vehicle") // BEV
+   .attr("d", "M149.5525226141287,509.734693877551L283.4716738872774,505.7489130727174L646.6600236351001,468.67857305137034L572.0761187314455,383.3333086290387L397.73656167491407,396.78320711461254L170.40239680366145,468.5729455737508L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165L122.25200413864755,490.0727048537165Z")
+   .style("opacity", "0.15")
+   .style("fill", function(d,i) { return get_colors(4); });
+
+// Axis
+var x = d3.scaleLinear().domain([0, 900]).range([0, width]);
+var y = d3.scaleLinear().domain([0, 850]).range([height, 0]);
+svg.append("g")
+   .attr("transform", "translate(0," + height + ")")
+   .call(d3.axisBottom(x))
+   .append("text")
+   .attr("fill", "black")
+   .attr("transform", "translate(" + width/2 + ", 30)")
+   .text("Costs (vehicle, fuel, and maintenance US$ / month)");
+svg.append("g")
+   .call(d3.axisLeft(y))
+   .append("text")
+   .attr("fill", "black")
+   .attr("transform", "rotate(-90) translate(" + -height/3 + ", -30)")
+   .text("Greenhouse gas emissions (lifecycle gCO₂eq / mile)");
+    
+// Legend
+var legend_data = ["Internal combustion engine (gasoline)", "Internal combustion engine (diesel)", "Hybrid", "Plug-in hybrid", "Battery electric vehicle"];
+var legend_square = 18;
+var legend_spacing = 4;
+var legend = svg.append("g")
+                .attr("class", "legend")
+                .attr("transform", "translate(" + (width + margin.left) + "," + margin.top + ")");
+var legend_items = legend.selectAll(".legend-item")
+                         .data(legend_data)
+                         .enter()
+                         .append("g")
+                         .attr("class", "legend-item")
+                         .attr("transform", function (d, i) {
+                          var height = legend_square + legend_spacing;
+                          var offset = height * legend_data.length / 2;
+                          var horz = -2 * legend_square;
+                          var vert = i * height - offset;
+                          return "translate(" + horz + "," + vert + ")"; });
+
+legend_items.append("rect")
+            .attr("width", legend_square)
+            .attr("height", legend_square)
+            .style("fill", function(d,i) { return get_colors(i); });
+legend_items.append("text")
+            .attr("x", legend_square + legend_spacing)
+            .attr("y", legend_square - legend_spacing)
+            .text(function (d) { return d; });
+      
+      var previousPageButton = document.createElement("button");
+      previousPageButton.innerHTML = "🡄 Previous";
+      previousPageButton.onclick = function () {
+        // Redirect to the previous page
+        window.location.href = "A2.html";
+      };
+      var nextPageButton = document.createElement("button");
+      nextPageButton.innerHTML = "Next 🡆";
+      nextPageButton.style.marginTop = "20px";
+      nextPageButton.onclick = function () {
+        // Redirect to the next page
+        window.location.href = "A4.html";
+      };
+             
+      document.body.appendChild(previousPageButton);
+      document.body.appendChild(nextPageButton);
+      
+  
+    </script>
+     
+  </body>
+</html>

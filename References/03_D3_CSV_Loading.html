@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="shortcut icon" href="#">
+		<meta charset="utf-8">
+		<title>D3: Loading data from a CSV file</title>
+		<!-- Load d3.js -->
+		<script src="https://d3js.org/d3.v4.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			d3.csv("food.csv", function(data) {
+				console.log(data);
+			});
+
+		</script>
+	</body>
+</html>

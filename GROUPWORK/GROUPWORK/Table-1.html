@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>D3 Pie Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        
+
+        .arc text {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            fill: #000;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 让body高度填满视口高度 */
+            margin: 0; /* 移除默认的margin */
+            position: relative;
+        }
+
+        
+
+
+        .center-text {
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            fill: #fff;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: auto;
+            height: auto;
+            padding: 8px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tooltip" class="tooltip"></div>
+    <script>
+        const svgWidth = 700;
+        const svgHeight = 650;
+        const chartWidth = 500;
+        const chartHeight = 500;
+        const radius = Math.min(chartWidth, chartHeight) / 2;
+        const innerRadius = radius - 100;
+        const gap = -5; // Gap size
+
+        // This is the outer SVG container
+        const svg = d3.select("body")
+            .append("svg")
+            .attr("width", svgWidth)
+            .attr("height", svgHeight)
+            // Here we append a group element to hold the chart at the correct size and position
+            .append("g")
+            .attr("transform", `translate(${(svgWidth - chartWidth) / 2 + chartWidth / 2}, ${(svgHeight - chartHeight) / 2 + chartHeight / 2 })`);
+
+        svg.append("text")
+            .attr("x", - svgWidth / 100)
+            .attr("y", -299) //调整这个值来改变标题的垂直位置
+            .attr("text-anchor", "middle")
+            .style("font-size", "25px") // 调整这个值来改变标题的大小
+            .style("font-weight", "bold")
+            .text("Breakdown of total global GHG emissions by sector")
+
+        const arc = d3.arc()
+            .outerRadius(radius);
+
+        const pie = d3.pie()
+            .sort(null)
+            .value(d => d.value)
+            .padAngle(0.005); // Set the pad angle to create gaps between the arcs
+
+
+
+        const data = [
+            {
+                label: "Energy Systems",
+                value: 20,
+                color: "#ccc",
+                children: [
+                    { label: "Coal", value: 10, color: "#ccc" },
+                    { label: "Oil", value: 5, color: "#ccc" },
+                    { label: "Gas", value: 5, color: "#ccc" }
+                ]
+            },
+            {
+                label: "Transport",
+                value: 8.7,
+                color: "#FFD700",
+                children: [
+                    { label: "Road", value: 6.1, color: "#FFD700" },
+                    { label: "International Shipping", value: 0.8, color: "#FFD700" },
+                    { label: "International Aviation", value: 0.6, color: "#FFD700" },
+                    { label: "Other Transport", value: 0.5, color: "#FFD700" },
+                    { label: "Domestic Aviation", value: 0.4, color: "#FFD700" },
+                    { label: "Inland Shipping", value: 0.2, color: "#FFD700" },
+                    { label: "Rail", value: 0.1, color: "#FFD700" }
+
+                ]
+            },
+            {
+                label: "Industry", value: 11.6, color: "#c0c0c0"
+            },
+            {
+                label: "Building", value: 3.3, color: "#c0c0c0"
+            },
+            {
+                label: "Agriculture,Forest,and Other Land Use", value: 13.1, color: "#c0c0c0"
+            }
+        ];
+
+        function drawPie(data, parentData) {
+            svg.selectAll("*:not(text)").remove();
+
+            // Adjust arc for 'Transport' sector
+            data.forEach(d => {
+                d.innerRadius = d.label === 'Transport' ? innerRadius + gap : innerRadius;
+            });
+
+            const arcs = svg.selectAll(".arc")
+                .data(pie(data))
+                .enter().append("g")
+                .attr("class", "arc");
+
+            const tooltip = d3.select("#tooltip");
+
+            const path = arcs.append("path")
+                .attr("fill", d => d.data.color)
+                .attr('d', d => arc.innerRadius(d.data.innerRadius)(d))
+                .on("mouseover", function (event, d) {
+                    tooltip.style("opacity", 1)
+                        .html(d.data.label + ": " + d.data.value)
+                        .style("left", (event.pageX) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                    d3.select(this).attr("fill", d3.rgb(d.data.color).darker(0.5)); // 同时改变填充色
+                })
+                .on("mousemove", function (event) {
+                    tooltip.style("left", (event.pageX) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function (event, d) {
+                    tooltip.style("opacity", 0);
+                    d3.select(this).attr("fill", d.data.color); // Restore to original color on mouse out
+                })
+
+                .on("click", function (event, d) {
+                    if (d.data.children && d.data.children.length > 0) {
+                        drawPie(d.data.children, d.data);
+                    }
+                });
+
+            path.transition()
+                .duration(1000)
+                .attrTween("d", arcTween(radius));
+
+            arcs.append("text")
+                .attr("transform", d => {
+                    const midAngle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+                    let angle = (midAngle - Math.PI / 2) * (180 / Math.PI);
+                    const position = arc.centroid(d);
+                    let xOff = position[0];
+                    let yOff = position[1];
+
+                    const specificOffset = 20;
+
+                    if (d.data.label === "Rail") {
+                        const offset = Math.sqrt(xOff * xOff + yOff * yOff) + specificOffset;
+                        const angleOffset = Math.atan2(yOff, xOff);
+                        xOff = Math.cos(angleOffset) * offset;
+                        yOff = Math.sin(angleOffset) * offset;
+                    }
+
+                    // 包括父级标签"Agriculture, Forest, and Other Land Use"在内的标签列表
+                    const labelsToInvert = [
+                        "Agriculture,Forest,and Other Land Use",
+                        "International Shipping",
+                        "International Aviation",
+                        "Other Transport",
+                        "Domestic Aviation",
+                        "Inland Shipping",
+                        "Rail",
+                        "Building",
+                        "Industry"
+                    ];
+
+                    if (labelsToInvert.includes(d.data.label) && midAngle > Math.PI) {
+                        angle += 180;
+                    }
+
+                    return `translate(${xOff},${yOff}) rotate(${angle})`;
+                })
+                .attr("text-anchor", d => {
+                    const midAngle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+                    const labelsToInvert = [
+                        "International Shipping",
+                        "International Aviation",
+                        "Other Transport",
+                        "Domestic Aviation",
+                        "Inland Shipping",
+                        "Agriculture, Forest, and Other Land Use"
+                    ];
+                    return (labelsToInvert.includes(d.data.label) && midAngle > Math.PI) ? "end" : "middle";
+                })
+                .text(d => d.data.label);
+
+
+
+
+            if (parentData && parentData.label === "Transport") {
+                const transportInnerRadius = innerRadius + gap;
+
+                svg.append("circle")
+                    .attr("r", 0) // start with a radius of 0
+                    .attr("fill", d3.rgb(parentData.color).darker(0.5))
+                    .transition() // animate the radius change
+                    .duration(1000)
+                    .attr("r", transportInnerRadius); // transition to the actual radius
+
+                svg.append("text")
+                    .attr("dy", ".35em")
+                    .attr("text-anchor", "middle")
+                    .text(parentData.label)
+                    .attr("class", "center-text");
+            }
+        }
+
+        function arcTween(outerRadius, delay) {
+            return function (d) {
+                const i = d3.interpolate(d.data.innerRadius, outerRadius);
+                return function (t) {
+                    d.outerRadius = i(t);
+                    return arc(d);
+                };
+            };
+        }
+
+        drawPie(data, null); // No parent data passed initially
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Styling</title>
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+</style>
+
+<body>
+
+  <div class="status">Styling</div>
+  <script src="d3.js"></script>
+  <script>
+	
+	var dataset = [5, 10, 15, 20, 25];
+	
+	d3.select('body').selectAll('p')
+		.data(dataset)
+		.enter()
+		.append('p')
+		.text(function(d){
+			return "I can count up to " + d;
+		})
+		.style('color', function(d) {
+			if (d > 15) {
+				return "red";
+			} else {
+				return "black";
+			}
+		});
+  </script>
+</body>
+</html>

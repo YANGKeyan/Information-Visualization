@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Styling</title>
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+</style>
+
+<body>
+  
+  <div class="status">Styling</div>
+  <script src="d3.js"></script>
+  <script>
+	var w = 2000;
+	var h = 2000;
+	
+	var dataset = [5, 10, 15, 20, 25];
+	
+	var svgContainer = d3.select("body")
+		.append("svg")
+        .attr("width", w)
+        .attr("height", h);
+	
+	var circles = svgContainer.selectAll('circle')
+		.data(dataset)
+		.enter()
+		.append('circle')
+		.style('fill', 'orange')
+		<!--.attr("r", 100)
+		.attr('r', function(d, i) {
+			return 10 + Math.random() * 40;
+		}) 
+		.attr("cx", function(d, i){
+			return(i*150)+100;
+		})
+		.attr("cy", 200)
+		.attr("stroke", "blue");
+  </script>
+</body>
+</html>

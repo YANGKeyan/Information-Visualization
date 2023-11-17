@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EVOLVING TO A MORE SUSTAINABLE MOBILITY ECOSYSTEM</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        text {
+            fill: rgb(7, 81, 0);
+            font-weight: bold;
+        }
+
+        .link {
+            stroke: darkgreen;
+            stroke-width: 2;
+            stroke-dasharray: 5,5;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>EVOLVING TO A MORE SUSTAINABLE MOBILITY ECOSYSTEM</h2>
+    <svg width="800" height="700"></svg>
+    <script>
+
+        const nodes = [
+            { x: 160, y: 300, label: "ELECTRIC\nVEHICLE" },
+            { x: 400, y: 100, label: "AUTONOMOUS\nVEHICLE" },
+            { x: 660, y: 300, label: "DATA CENTERS" },
+            { x: 550, y: 530, label: "RENEWABLE ENERGY\nGRID" },
+            { x: 250, y: 530, label: "CHARGING STATION\nNETWORK" }
+        ];
+
+        const svg = d3.select("svg");
+
+
+        const links = [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 0]
+        ];
+
+        svg.selectAll(".link")
+            .data(links)
+            .enter()
+            .append("line")
+            .attr("x1", d => nodes[d[0]].x)
+            .attr("y1", d => nodes[d[0]].y)
+            .attr("x2", d => nodes[d[1]].x)
+            .attr("y2", d => nodes[d[1]].y)
+            .attr("class", "link");
+
+        svg.selectAll("circle")
+            .data(nodes)
+            .enter()
+            .append("circle")
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", 90)
+            .style("fill", "lightgreen");
+
+        svg.selectAll("text")
+            .data(nodes)
+            .enter()
+            .append("text")
+            .attr("x", d => d.x)
+            .attr("y", d => d.y)
+            .attr("dy", 4)
+            .style("text-anchor", "middle")
+            .html(function(d) {
+                return d.label.split('\n').map((line, i) => (
+                    `<tspan x="${d.x}" dy="${i === 0 ? 0 : '1.2em'}">${line}</tspan>`
+                )).join('');
+            });
+
+        svg.append("text")
+            .attr("x", 90)
+            .attr("y", 160)
+            .text("AlI AVs will be EVs")
+            .style("fill", "black");
+
+        svg.append("text")
+            .attr("x", 560)
+            .attr("y", 130)
+            .style("fill", "black")
+            .text("AVs' data will require")
+            .append("tspan")
+            .attr("x", 560)
+            .attr("dy", 20) 
+            .text("millions of servers and")
+            .append("tspan")
+            .attr("x", 560)
+            .attr("dy", 20) 
+            .text("thousands of data centers");
+
+        svg.append("text")
+            .attr("x", 630)
+            .attr("y", 420)
+            .style("fill", "black")
+            .text("Energy is 40% of")
+            .append("tspan")
+            .attr("x", 630)
+            .attr("dy", 20)
+            .text("data center")
+            .append("tspan")
+            .attr("x", 630)
+            .attr("dy", 20) 
+            .text("operating expense");
+
+        svg.append("text")
+            .attr("x", 300)
+            .attr("y", 630)
+            .style("fill", "black")
+            .text("EV energy demands require")
+            .append("tspan")
+            .attr("x", 300)
+            .attr("dy", 20) 
+            .text("additional focus on")
+            .append("tspan")
+            .attr("x", 300)
+            .attr("dy", 20) 
+            .text("clean renewable energy sources");
+
+        svg.append("text")
+            .attr("x", 10)
+            .attr("y", 410)
+            .style("fill", "black")
+            .text("Charging stations:")
+            .append("tspan")
+            .attr("x", 10)
+            .attr("dy", 20) 
+            .text("with greater power")
+            .append("tspan")
+            .attr("x", 10)
+            .attr("dy", 20) 
+            .text("conversion efficiency");    
+
+    </script>
+</body>
+</html>

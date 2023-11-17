@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Energy Vehicle Types Bubble Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 102vh;
+        
+            background-color: #f0f0f0;
+    
+        margin-left: 30px;
+        margin-top: 20px;
+    
+        }
+
+        text {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        circle {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+           
+        }
+
+            circle:hover {
+                transform: scale(1.05);
+            }
+                   /* 设置按钮的样式和位置 */
+                   button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(72, 141, 11);
+        color: rgb(228, 233, 237);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+</head>
+<body>
+    <h1 style="position: absolute; top: 0px; left: 30px; right: 400px;">2. New Energy Vehicle Technology</h1>
+    <h2  style="position: absolute; top: 60px; left: 30px; right: 400px;color:#555;"> 2.1 Types of New Energy Vehicle</h2>
+    <script>
+        const imageMap = {
+            "Electric Vehicles": "image1.png",
+            "Battery Electric Vehicles": "image2.png",
+            "Plug-in Hybrid Electric Vehicles": "image3.png",
+            "Hydrogen Fuel Cell Vehicles": "image4.png",
+            "Hybrid Electric Vehicles": "image5.png",
+            "Compressed Natural Gas Vehicles": "image6.png",
+            "Diesel-Electric Hybrid Vehicles": "image7.png"
+        };
+        function showImage(event, d) {
+            const imageName = imageMap[d.data.name];
+            if (imageName) {
+                // 获取屏幕的宽度和高度
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+
+                // 计算中心位置
+                const xPosition = 2*screenWidth / 3;
+                const yPosition = screenHeight / 5;
+
+                // 将图片放置在屏幕中心
+                // 需要注意的是，图片的左上角将位于屏幕中心
+                // 如果想要图片的中心位于屏幕中心，需要根据图片的尺寸进行调整
+                svg.append('image')
+                    .attr('href', imageName)
+                    .attr('x', xPosition - 50) // 假设图片宽度为100px
+                    .attr('y', yPosition - 50) // 假设图片高度为100px
+                    .attr('width', '500px') // 图片宽度*
+                    .attr('height', '500px') // 图片高度
+                    .attr('class', 'tooltip-image');
+            }
+        }
+
+        // 创建鼠标移开时移除图片的函数
+        function hideImage() {
+            svg.select('.tooltip-image').remove();
+        }
+
+        // 为每个圆添加悬停事件
+        
+        const data = {
+            name: "New Energy Vehicles",
+            children: [
+                {
+                    name: "Electric Vehicles",
+                    children: [
+                        { name: "Battery Electric Vehicles" },
+                        { name: "Plug-in Hybrid Electric Vehicles" }
+                    ]
+                },
+                { name: "Hydrogen Fuel Cell Vehicles" },
+                { name: "Hybrid Electric Vehicles" },
+                { name: "Compressed Natural Gas Vehicles" },
+                { name: "Diesel-Electric Hybrid Vehicles" }
+            ]
+        };
+
+
+        const width = window.innerWidth * 0.9;
+        const height = window.innerHeight * 0.9;
+
+        const svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const root = d3.hierarchy(data)
+            .sum(d => 1)
+            .sort((a, b) => b.value - a.value);
+
+        const bubbleLayout = d3.pack()
+            .size([width, height])
+            .padding(15);
+
+        const nodes = bubbleLayout(root).descendants();
+
+        // 首先，为每个元素（圆圈、文本和线条）提供数据并创建元素
+        const circles = svg.selectAll("circle")
+            .data(nodes)
+            .enter()
+            .append("circle")
+            .on('mouseover', showImage) // 在此处绑定事件
+            .on('mouseout', hideImage);
+
+        const lines = svg.selectAll("line")
+            .data(nodes)
+            .enter()
+            .append("line");
+
+        const texts = svg.selectAll("text")
+            .data(nodes)
+            .enter()
+            .append("text");
+
+        // 然后，定义每个元素的属性
+        circles
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", d => d.r)
+            .attr("fill", d => {
+                switch (d.depth) {
+                    case 1: return "lightblue";
+                    case 2: return "lightgreen";
+                    default: return "none";
+                }
+            })
+            .attr("stroke", "#000")
+            .attr("filter", "url(#drop-shadow)");
+
+        lines
+            .attr("x1", d => d.x)
+            .attr("y1", d => {
+                if (d.data.name === "Battery Electric Vehicles") {
+                    return d.y + 20; // 调整这个值以更改位置
+                }
+                return d.y;
+            })
+            .attr("x2", d => {
+                const textDirection = d.x > width / 2 ? 1 : -1;
+                return d.x + (d.r + 10) * textDirection;
+            })
+            .attr("y2", d => {
+                if (d.data.name === "Battery Electric Vehicles") {
+                    return d.y + 40; // 调整这个值以更改位置
+                }
+                return d.y;
+            })
+            .attr("stroke", "black")
+            .filter(d => d.data.name === "New Energy Vehicles")
+            .remove();
+
+
+        texts
+
+            .style("font-size", d => {
+                if (d.data.name === "New Energy Vehicles") {
+                    return "25px"; // 你可以根据需要调整这个值
+                }
+                if (d.data.name === "Electric Vehicles") {
+                    return "20px"; // 你可以根据需要调整这个值
+                }
+                return "16px"; // 这是默认的字体大小，你可以根据需要调整这个值
+            })
+            
+            .attr("x", d => {
+                if (d.data.name === "New Energy Vehicles") {
+                    return d.x + 180; // 使用圆心的x坐标作为基础
+                }
+                if (d.data.name === "Plug-in Hybrid Electric Vehicles") {
+                    return d.x - 300; // 使用圆心的x坐标作为基础
+                }
+
+                if (d.data.name === "Electric Vehicles") {
+                    return d.x + 100; // 使用圆心的x坐标作为基础
+                }
+                const textDirection = d.x > width / 2 ? 1 : -1;
+                return d.x + (d.r + 15) * textDirection;
+            })
+
+            .attr("y", d => {
+                if (d.data.name === "New Energy Vehicles") {
+                    return d.y - 300; // 使用圆心的y坐标，并向下移动适当的距离，使其位于红色圆圈内
+                }
+                if (d.data.name === "Battery Electric Vehicles") {
+                    return d.y + 50;
+                }
+                
+
+                if (d.data.name === "Electric Vehicles") {
+                    return d.y - 150;
+                }
+                
+
+                return d.y;
+            })
+            .attr("text-anchor", d => {
+                if (d.data.name === "New Energy Vehicles") {
+                    return "middle"; // 设置文本对齐方式为中心对齐
+                }
+                return d.x > width / 2 ? "start" : "end";
+            })
+            .attr("dy", "0.3em")
+            .text(d => d.data.name);
+
+
+        // Define filter to add shadow to bubbles
+        const defs = svg.append("defs");
+
+        const filter = defs.append("filter")
+            .attr("id", "drop-shadow")
+            .attr("height", "130%");
+
+        filter.append("feGaussianBlur")
+            .attr("in", "SourceAlpha")
+            .attr("stdDeviation", 3)
+            .attr("result", "blur");
+
+        filter.append("feOffset")
+            .attr("in", "blur")
+            .attr("dx", 2)
+            .attr("dy", 2)
+            .attr("result", "offsetBlur");
+
+        const feMerge = filter.append("feMerge");
+
+        feMerge.append("feMergeNode")
+            .attr("in", "offsetBlur");
+
+        feMerge.append("feMergeNode")
+            .attr("in", "SourceGraphic");
+   
+    </script>
+</body>
+<a href="A4.html">
+    <button type="button" style="position: absolute; top: 750px; left: 30px;">🡄 Previous</button>
+</a>
+<a href="./b_2 performance-of-nev.html">
+    <button type="button" style="position: absolute; top: 750px; left: 170px;">Next 🡆</button>
+</a>
+
+</html>
