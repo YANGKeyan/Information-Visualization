@@ -1,2 +1,5 @@
-# Information-Visualization
-IN6221 mainly D3 study
+# IN6221 Information Visualization
+
+Tableau, D3&JavaScript study
+
+Final Presentation：Industry Visualization Study on New Energy Vehicles
